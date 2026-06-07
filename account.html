@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>계정 설정 - 주간 스케줄 관리 시스템</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .hidden { display: none !important; }
+        .admin-section { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        
+        /* 계정 설정 전용 스타일 */
+        .alert-box { background-color: #fff3cd; color: #856404; padding: 15px; border-radius: 4px; border: 1px solid #ffeeba; margin-bottom: 20px; font-weight: bold; }
+        .danger-zone { border: 1px solid #dc3545; padding: 20px; border-radius: 8px; background-color: #fff8f8; }
+        .danger-zone h3 { color: #dc3545; margin-bottom: 10px; font-size: 16px; }
+        .danger-zone p { font-size: 13px; color: #666; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+    <header>주간 스케줄 관리 시스템</header>
+    
+    <div class="container">
+        <nav>
+            <a href="work.html">근무</a>
+            <a href="schedule.html">시간표</a>
+            <a href="board.html">게시판</a>
+            <a href="admin.html" id="nav-admin" class="hidden">관리 (직원/설정)</a>
+            <a href="account.html" class="active">계정 설정</a>
+            <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+        </nav>
+
+        <main>
+            <div id="first-login-alert" class="alert-box hidden">
+                ⚠️ 초기 비밀번호(생년월일)를 사용 중입니다. 안전한 이용을 위해 비밀번호를 변경해주세요.
+            </div>
+
+            <div class="admin-section">
+                <h2>비밀번호 변경</h2>
+                <div style="max-width: 400px;">
+                    <div class="form-group">
+                        <label>현재 비밀번호</label>
+                        <input type="password" id="current-pw" placeholder="현재 비밀번호 입력">
+                    </div>
+                    <div class="form-group">
+                        <label>새 비밀번호</label>
+                        <input type="password" id="new-pw" placeholder="새로운 비밀번호 입력">
+                    </div>
+                    <div class="form-group">
+                        <label>새 비밀번호 확인</label>
+                        <input type="password" id="confirm-pw" placeholder="새로운 비밀번호 다시 입력">
+                    </div>
+                    <button onclick="changePassword()" style="width: 100%; margin-top: 10px;">비밀번호 변경</button>
+                </div>
+            </div>
+
+            <div class="danger-zone">
+                <h3>계정 탈퇴</h3>
+                <p>계정을 탈퇴하면 모든 근무 기록과 스케줄 데이터 연결이 해제되며, 되돌릴 수 없습니다.<br>퇴사 처리의 경우 관리자에게 문의하세요.</p>
+                <button class="btn-danger" onclick="deleteAccount()">계정 탈퇴하기</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="account.js"></script>
+</body>
+</html>

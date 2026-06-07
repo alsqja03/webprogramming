@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시간표 - 주간 스케줄 관리 시스템</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 시간표 전용 추가 스타일 (style.css에 있는 .admin-section 클래스를 카드 레이아웃으로 활용) */
+        .admin-section { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        .hidden { display: none !important; }
+        .day-checkbox { transform: scale(1.5); margin-right: 10px; }
+    </style>
+</head>
+<body>
+
+    <header>주간 스케줄 관리 시스템</header>
+    
+    <div class="container">
+        <nav>
+            <a href="work.html">근무</a>
+            <a href="schedule.html" class="active">시간표</a>
+            <a href="board.html">게시판</a>
+            <a href="admin.html" id="nav-admin" class="hidden">관리 (직원/설정)</a>
+            <a href="account.html">계정 설정</a>
+            <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+        </nav>
+
+        <main>
+            <div class="admin-section">
+                <h2>주 별 시간표 보기</h2>
+                <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center;">
+                    <input type="week" id="view-week" style="width: 200px;">
+                    <button onclick="viewConfirmedSchedule()">조회하기</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>요일</th><th>직책</th><th>이름</th><th>기타사항</th></tr>
+                    </thead>
+                    <tbody id="confirmed-schedule-list">
+                        <tr><td colspan="4" style="text-align:center;">주차를 선택하고 조회해주세요.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="admin-section" id="submit-section">
+                <h2>다음주 시간표 제출</h2>
+                <p style="margin-bottom: 15px; font-size: 14px; color: #666;">출근 가능한 요일을 체크하고, 특이사항이 있다면 작성해주세요.</p>
+                <div class="form-group" style="width: 200px;">
+                    <label>제출 주차 선택</label>
+                    <input type="week" id="submit-week">
+                </div>
+                <table>
+                    <thead>
+                        <tr><th style="width: 80px;">요일</th><th style="width: 100px;">가능 여부</th><th>기타사항 (예: 10시 퇴근)</th></tr>
+                    </thead>
+                    <tbody id="submit-tbody">
+                        </tbody>
+                </table>
+                <button style="margin-top: 15px;" onclick="submitMySchedule()">시간표 제출</button>
+            </div>
+
+            <div class="admin-section hidden" id="confirm-section">
+                <h2>시간표 확정 및 수정 (관리자 전용)</h2>
+                <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center;">
+                    <input type="week" id="confirm-week">
+                    <!-- 드롭다운 제거됨 -->
+                    <button onclick="loadCandidates()">신청자 전체 불러오기 (월~일)</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>요일</th><th>이름</th><th>신청시 기타사항</th><th>직책 선택</th><th>관리자 수정(기타)</th><th>출근 확정</th></tr>
+                    </thead>
+                    <tbody id="candidate-list">
+                        <tr><td colspan="6" style="text-align:center;">주차를 선택하고 불러오기를 눌러주세요.</td></tr>
+                    </tbody>
+                </table>
+                <button style="margin-top: 15px; background-color: #28a745;" onclick="saveConfirmedSchedule()">전체 인원 확정 및 변경사항 저장</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="schedule.js"></script>
+</body>
+</html>

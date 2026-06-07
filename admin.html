@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리 - 주간 스케줄 관리 시스템</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>주간 스케줄 관리 시스템</header>
+    
+    <div class="container">
+        <nav>
+            <a href="work.html">근무</a>
+            <a href="schedule.html">시간표</a>
+            <a href="board.html">게시판</a>
+            <a href="admin.html" class="active">관리 (직원/설정)</a>
+            <a href="account.html">계정 설정</a>
+            <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+        </nav>
+
+        <main>
+            <div class="admin-section">
+                <h2>직책 종류 설정</h2>
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <input type="text" id="new-role" placeholder="새로운 직책 입력 (예: 매니저)">
+                    <button onclick="addRole()">직책 추가</button>
+                </div>
+                <table>
+                    <thead><tr><th>등록된 직책</th><th>관리</th></tr></thead>
+                    <tbody id="role-list">
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="admin-section">
+                <h2>직원 계정 생성</h2>
+                <div class="form-group">
+                    <label>직원 이름</label>
+                    <input type="text" id="emp-name" placeholder="이름 입력">
+                </div>
+                <div class="form-group">
+                    <label>전화번호 (로그인 ID)</label>
+                    <input type="text" id="emp-phone" placeholder="'-' 없이 숫자만 입력">
+                </div>
+                <div class="form-group">
+                    <label>생년월일 (초기 비밀번호)</label>
+                    <input type="text" id="emp-birth" placeholder="예: 990101">
+                </div>
+                <div class="form-group">
+                    <label>초기 직책 부여</label>
+                    <select id="emp-role">
+                        <option value="">직책을 선택하세요</option>
+                        </select>
+                </div>
+                <button onclick="createEmployee()">계정 생성</button>
+            </div>
+
+            <div class="admin-section">
+                <h2>직원 관리</h2>
+                <table>
+                    <thead>
+                        <tr><th>이름</th><th>전화번호 (ID)</th><th>직책</th><th>시급</th><th>관리</th></tr>
+                    </thead>
+                    <tbody id="employee-list">
+                        </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 - 주간 스케줄 관리 시스템</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="login-box">
+        <h2>시스템 로그인</h2>
+        <p style="color:#666; font-size:13px; margin-bottom:20px;">전화번호와 비밀번호를 입력하세요.</p>
+        <input type="text" id="userid" placeholder="아이디 (전화번호)">
+        <input type="password" id="userpw" placeholder="비밀번호">
+        <button onclick="handleLogin()">로그인</button>
+    </div>
+
+    <script>
+        // 1. 시연용 기초 데이터 세팅
+        function initDemoData() {
+            // 사장님 계정
+            if (!localStorage.getItem('employees')) {
+                const defaultEmployees = [{ 
+                    id: '01000000000', pw: '700101', name: '김사장', role: '사장', isFirstLogin: false, hourlyWage: 0 
+                }];
+                localStorage.setItem('employees', JSON.stringify(defaultEmployees));
+            }
+            // 직책 데이터
+            if (!localStorage.getItem('roles')) {
+                localStorage.setItem('roles', JSON.stringify(['사장', '매니저', '일반직원']));
+            }
+            // 스케줄 데이터
+            if (!localStorage.getItem('schedules')) {
+                localStorage.setItem('schedules', JSON.stringify([]));
+            }
+        }
+
+        // 2. 로그인 처리 및 페이지 이동 로직
+        function handleLogin() {
+            const inputId = document.getElementById('userid').value.trim();
+            const inputPw = document.getElementById('userpw').value.trim();
+            
+            const employees = JSON.parse(localStorage.getItem('employees')) || [];
+            const user = employees.find(emp => emp.id === inputId && emp.pw === inputPw);
+
+            if (user) {
+                // 세션에 로그인 정보 저장
+                sessionStorage.setItem('loggedInUser', JSON.stringify(user));
+                
+                // 화면 숨김 처리(display:none) 대신, 실제 HTML 파일로 위치를 이동(Redirect)시킵니다.
+                if (user.isFirstLogin) {
+                    alert("첫 로그인입니다. 보안을 위해 비밀번호 변경이 필요합니다.");
+                    window.location.href = 'account.html'; // 추후 생성할 계정 설정 페이지
+                } else {
+                    window.location.href = 'schedule.html'; // 기본 메인 화면인 시간표 페이지
+                }
+            } else {
+                alert("전화번호(아이디) 또는 비밀번호가 일치하지 않습니다.");
+            }
+        }
+
+        // 3. 페이지 로드 시 동작
+        window.onload = function() {
+            initDemoData();
+            // 이미 세션에 로그인 정보가 있다면 로그인 창을 보여주지 않고 바로 시간표 페이지로 넘깁니다.
+            if (sessionStorage.getItem('loggedInUser')) {
+                window.location.href = 'schedule.html';
+            }
+        };
+    </script>
+</body>
+</html>
