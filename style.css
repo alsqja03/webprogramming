@@ -31,9 +31,29 @@ input[type="text"], input[type="number"], select { width: 100%; padding: 10px; b
 button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
 button:hover { background-color: #0056b3; }
 
-table { display: block; width: 100%; overflow-x: auto; white-space: nowrap; border-collapse: collapse; margin-top: 10px; }
-th, td { border: 1px solid #ddd; padding: 10px; text-align: left; font-size: 14px; }
+/* --- 표 스타일 수정 --- */
+/* 1. 테이블 전체 너비를 폼 입력창과 동일하게 맞춤 */
+table { 
+    display: table; /* display: block에서 table로 변경 */
+    width: 100%; 
+    max-width: 100%; /* 부모 박스(admin-section) 너비에 맞춤 */
+    border-collapse: collapse; 
+    margin-top: 10px; 
+}
+
+/* 2. 모든 셀(헤더 및 데이터)의 텍스트를 가운데 정렬 */
+th, td { 
+    border: 1px solid #ddd; 
+    padding: 10px; 
+    text-align: center; /* left에서 center로 변경 */
+    font-size: 14px; 
+}
+
+/* 3. 헤더 배경색 */
 th { background-color: #f8f9fa; }
+
+/* 4. 버튼이 들어가는 칸은 여전히 깔끔하게 처리 */
+td button { margin: 0 auto; display: block; }
 .btn-small { padding: 5px 10px; font-size: 12px; }
 .btn-danger { background-color: #dc3545; }
 .btn-danger:hover { background-color: #c82333; }
