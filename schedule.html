@@ -37,14 +37,17 @@
                     <input type="week" id="view-week" style="width: 200px;">
                     <button onclick="viewConfirmedSchedule()">조회하기</button>
                 </div>
-                <table>
-                    <thead>
-                        <tr><th>요일</th><th>직책</th><th>이름</th><th>기타사항</th></tr>
-                    </thead>
-                    <tbody id="confirmed-schedule-list">
-                        <tr><td colspan="4" style="text-align:center;">주차를 선택하고 조회해주세요.</td></tr>
-                    </tbody>
-                </table>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr><th>요일</th><th>직책</th><th>이름</th><th>기타사항</th></tr>
+                        </thead>
+                        <tbody id="confirmed-schedule-list">
+                            <tr><td colspan="4" style="text-align:center;">주차를 선택하고 조회해주세요.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="admin-section" id="submit-section">
@@ -54,13 +57,15 @@
                     <label>제출 주차 선택</label>
                     <input type="week" id="submit-week">
                 </div>
-                <table>
-                    <thead>
-                        <tr><th style="width: 80px;">요일</th><th style="width: 100px;">가능 여부</th><th>기타사항 (예: 10시 퇴근)</th></tr>
-                    </thead>
-                    <tbody id="submit-tbody">
-                        </tbody>
-                </table>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr><th style="width: 80px;">요일</th><th style="width: 100px;">가능 여부</th><th>기타사항 (예: 10시 퇴근)</th></tr>
+                        </thead>
+                        <tbody id="submit-tbody">
+                            </tbody>
+                    </table>
+                </div>
                 <button style="margin-top: 15px;" onclick="submitMySchedule()">시간표 제출</button>
             </div>
 
@@ -71,14 +76,16 @@
                     <!-- 드롭다운 제거됨 -->
                     <button onclick="loadCandidates()">신청자 전체 불러오기 (월~일)</button>
                 </div>
-                <table>
-                    <thead>
-                        <tr><th>요일</th><th>이름</th><th>신청시 기타사항</th><th>직책 선택</th><th>관리자 수정(기타)</th><th>출근 확정</th></tr>
-                    </thead>
-                    <tbody id="candidate-list">
-                        <tr><td colspan="6" style="text-align:center;">주차를 선택하고 불러오기를 눌러주세요.</td></tr>
-                    </tbody>
-                </table>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr><th>요일</th><th>이름</th><th>신청시 기타사항</th><th>직책 선택</th><th>관리자 수정(기타)</th><th>출근 확정</th></tr>
+                        </thead>
+                        <tbody id="candidate-list">
+                            <tr><td colspan="6" style="text-align:center;">주차를 선택하고 불러오기를 눌러주세요.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
                 <button style="margin-top: 15px; background-color: #28a745;" onclick="saveConfirmedSchedule()">전체 인원 확정 및 변경사항 저장</button>
             </div>
         </main>
