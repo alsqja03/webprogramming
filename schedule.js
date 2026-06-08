@@ -138,12 +138,49 @@ function saveConfirmedSchedule() {
 function viewConfirmedSchedule() {
     const targetWeek = document.getElementById('view-week').value;
     const schedules = JSON.parse(localStorage.getItem('schedules')) || [];
-    // [수정] 명시적 true 체크로 오류 해결
-    const confirmed = schedules.filter(s => s.week === targetWeek && s.isConfirmed === true);
+    const confirmed = schedules.filter(s => s.week === targetWeek && s.isConfirmed);
     const tbody = document.getElementById('confirmed-schedule-list');
     tbody.innerHTML = '';
-    
-    // ... 이하 렌더링 로직 동일 ...
+
+    if (confirmed.length === 0) {
+        return tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">해당 주차에 확정된 시간표가 없습니다.</td></tr>`;
+    }
+
+    daysOfWeek.forEach(day => {
+        let daySchedules = confirmed.filter(s => s.day === day);
+        if (daySchedules.length === 0) return; // 출근자가 없는 요일은 스킵
+        
+        // 직책(가나다) -> 이름(가나다) 순으로 정렬
+        daySchedules.sort((a, b) => {
+            if (a.assignedRole !== b.assignedRole) return a.assignedRole.localeCompare(b.assignedRole);
+            return a.empName.localeCompare(b.empName);
+        });
+        
+        // 직책별 개수 계산
+        let roleCounts = {};
+        daySchedules.forEach(s => { roleCounts[s.assignedRole] = (roleCounts[s.assignedRole] || 0) + 1; });
+        let renderedRoles = {};
+
+        daySchedules.forEach((s, index) => {
+            // 요일 셀 병합
+            const dayCell = index === 0 ? `<td rowspan="${daySchedules.length}" style="font-weight:bold; text-align:center; background:#f8f9fa; vertical-align:middle;">${day}</td>` : '';
+            
+            // 직책 셀 병합
+            const roleCell = !renderedRoles[s.assignedRole] 
+                ? `<td rowspan="${roleCounts[s.assignedRole]}" style="text-align:center; vertical-align:middle;"><span style="background:#e9ecef; padding:3px 8px; border-radius:4px; font-size:12px;">${s.assignedRole}</span></td>` 
+                : '';
+            renderedRoles[s.assignedRole] = true;
+
+            tbody.innerHTML += `
+                <tr>
+                    ${dayCell}
+                    ${roleCell}
+                    <td style="font-weight:bold; vertical-align:middle;">${s.empName}</td>
+                    <td style="color:#555; vertical-align:middle;">${s.remarks}</td>
+                </tr>
+            `;
+        });
+    });
 }
 
 function handleLogout() {
