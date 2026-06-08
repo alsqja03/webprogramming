@@ -38,7 +38,6 @@ table {
     table-layout: fixed; /* 중요: 셀 너비를 강제로 고정하여 밖으로 삐져나가지 않게 함 */
     border-collapse: collapse; 
     margin-top: 10px; 
-    min-width: 700px
 }
 
 th, td { 
