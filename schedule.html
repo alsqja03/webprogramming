@@ -60,7 +60,7 @@
                 <div class="table-wrapper">
                     <table>
                         <thead>
-                            <tr><th style="width: 80px;">요일</th><th style="width: 100px;">가능 여부</th><th>기타사항 (예: 10시 퇴근)</th></tr>
+                            <tr><th style="width: 80px;">요일</th><th style="width: 100px;">가능 여부</th><th>기타사항</th></tr>
                         </thead>
                         <tbody id="submit-tbody">
                             </tbody>
@@ -73,13 +73,12 @@
                 <h2>시간표 확정 및 수정 (관리자 전용)</h2>
                 <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center;">
                     <input type="week" id="confirm-week">
-                    <!-- 드롭다운 제거됨 -->
                     <button onclick="loadCandidates()">신청자 전체 불러오기 (월~일)</button>
                 </div>
                 <div class="table-wrapper">
                     <table>
                         <thead>
-                            <tr><th>요일</th><th>이름</th><th>신청시 기타사항</th><th>직책 선택</th><th>관리자 수정(기타)</th><th>출근 확정</th></tr>
+                            <tr><th>요일</th><th>이름</th><th>신청 시 기타사항</th><th>직책 선택</th><th>관리자 수정(기타)</th><th>출근 확정</th></tr>
                         </thead>
                         <tbody id="candidate-list">
                             <tr><td colspan="6" style="text-align:center;">주차를 선택하고 불러오기를 눌러주세요.</td></tr>
