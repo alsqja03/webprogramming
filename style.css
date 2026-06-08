@@ -32,24 +32,35 @@ button { padding: 10px 15px; background-color: #007bff; color: white; border: no
 button:hover { background-color: #0056b3; }
 
 /* --- 표 스타일 수정 --- */
-/* 1. 테이블 전체 너비를 폼 입력창과 동일하게 맞춤 */
 table { 
-    display: table; /* display: block에서 table로 변경 */
+    display: table; 
     width: 100%; 
-    max-width: 100%; /* 부모 박스(admin-section) 너비에 맞춤 */
+    table-layout: fixed; /* 중요: 셀 너비를 강제로 고정하여 밖으로 삐져나가지 않게 함 */
     border-collapse: collapse; 
     margin-top: 10px; 
 }
 
-/* 2. 모든 셀(헤더 및 데이터)의 텍스트를 가운데 정렬 */
 th, td { 
     border: 1px solid #ddd; 
-    padding: 10px; 
-    text-align: center; /* left에서 center로 변경 */
-    font-size: 14px; 
+    padding: 5px; /* 패딩을 조금 줄여서 공간 확보 */
+    text-align: center; 
+    font-size: 13px; /* 글자 크기를 살짝 줄여서 한 줄에 들어가게 함 */
+    word-wrap: break-word; /* 글자가 길면 줄바꿈 처리 */
 }
 
-/* 3. 헤더 배경색 */
+/* 테이블 안의 입력창들 너비 조절 */
+td input[type="text"], 
+td input[type="number"], 
+td select { 
+    width: 100%; 
+    padding: 5px; 
+    font-size: 13px;
+    box-sizing: border-box; /* 패딩이 너비에 포함되게 함 */
+}
+
+/* 관리 버튼 칸 너비 고정 */
+td:last-child { width: 60px; } 
+
 th { background-color: #f8f9fa; }
 
 /* 4. 버튼이 들어가는 칸은 여전히 깔끔하게 처리 */
