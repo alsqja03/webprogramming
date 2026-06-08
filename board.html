@@ -46,19 +46,21 @@
                     <h2 style="margin: 0; border: none;">공지사항</h2>
                     <button id="btn-write-form" class="hidden" onclick="toggleWriteForm(true)">새 공지 작성</button>
                 </div>
-                
-                <table class="board-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 80px;">번호</th>
-                            <th>제목</th>
-                            <th style="width: 120px;">작성자</th>
-                            <th style="width: 180px;">등록일</th>
-                        </tr>
-                    </thead>
-                    <tbody id="notice-list">
-                        </tbody>
-                </table>
+
+                <div class="table-wrapper">
+                    <table class="board-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;">번호</th>
+                                <th>제목</th>
+                                <th style="width: 120px;">작성자</th>
+                                <th style="width: 180px;">등록일</th>
+                            </tr>
+                        </thead>
+                        <tbody id="notice-list">
+                            </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="admin-section hidden" id="section-write">
