@@ -20,8 +20,61 @@ window.onload = function() {
     
     document.getElementById('work-date').value = localToday.split('T')[0];
     document.getElementById('view-month').value = localToday.slice(0, 7); 
+    
+    // 추가된 함수 호출
+    renderMyWeeklySchedule(); 
     viewWorkHistory(); 
 };
+
+// [추가] ISO Week 계산 (오늘 날짜가 몇 번째 주인지 계산)
+function getISOWeekString(dateObj) {
+    const target = new Date(dateObj.valueOf());
+    const dayNr = (target.getDay() + 6) % 7;
+    target.setDate(target.getDate() - dayNr + 3);
+    const firstThursday = target.valueOf();
+    target.setMonth(0, 1);
+    if (target.getDay() !== 4) {
+        target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);
+    }
+    const weekNum = 1 + Math.ceil((firstThursday - target) / 604800000);
+    return `${target.getFullYear()}-W${weekNum.toString().padStart(2, '0')}`;
+}
+
+// [추가] 나의 이번 주 스케줄 렌더링
+function renderMyWeeklySchedule() {
+    const currentWeekStr = getISOWeekString(new Date());
+    const schedules = JSON.parse(localStorage.getItem('schedules')) || [];
+    
+    // 현재 주차, 내 ID, 확정(isConfirmed: true)된 데이터 필터링
+    const myThisWeek = schedules.filter(s => 
+        s.week === currentWeekStr && 
+        s.empId === currentUser.id && 
+        s.isConfirmed === true
+    );
+    
+    const container = document.getElementById('my-weekly-schedule-container');
+    if (!container) return; // HTML에 해당 ID가 없으면 중단
+
+    if (myThisWeek.length === 0) {
+        container.innerHTML = `<p style="padding:10px; color:#888;">이번 주 확정된 출근 스케줄이 없습니다.</p>`;
+        return;
+    }
+
+    const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
+    myThisWeek.sort((a, b) => daysOfWeek.indexOf(a.day) - daysOfWeek.indexOf(b.day));
+
+    let html = `<div style="display: flex; gap: 10px; flex-wrap: wrap;">`;
+    myThisWeek.forEach(s => {
+        html += `
+            <div style="background:#e7f1ff; border:1px solid #b3d7ff; padding:10px; border-radius:5px; text-align:center;">
+                <div style="font-weight:bold; color:#0056b3;">${s.day}요일</div>
+                <div style="font-size:13px;">${s.assignedRole}</div>
+            </div>
+        `;
+    });
+    html += `</div>`;
+    container.innerHTML = html;
+}
 
 function recordWorkTime() {
     const workDate = document.getElementById('work-date').value;
@@ -38,9 +91,8 @@ function recordWorkTime() {
 
     const employees = JSON.parse(localStorage.getItem('employees')) || [];
     const freshUserInfo = employees.find(emp => emp.id === currentUser.id);
-    const wage = freshUserInfo.hourlyWage || 0;
+    const wage = freshUserInfo ? (freshUserInfo.hourlyWage || 0) : 0;
 
-    // [추가됨] 시급 미설정 시 방어 로직
     if (wage === 0) {
         return alert("시급이 설정되어 있지 않아 근무를 등록할 수 없습니다. 관리자에게 먼저 문의해주세요.");
     }
@@ -48,7 +100,7 @@ function recordWorkTime() {
     const dailyWage = Math.floor(diffHours * wage);
 
     const newLog = {
-        id: Date.now(), // [추가됨] 수정/삭제를 위한 고유 ID 부여
+        id: Date.now(),
         empId: currentUser.id,
         workDate: workDate,
         startTime: startTime,
@@ -58,7 +110,7 @@ function recordWorkTime() {
         dailyWage: dailyWage
     };
 
-    let worklogs = JSON.parse(localStorage.getItem('worklogs'));
+    let worklogs = JSON.parse(localStorage.getItem('worklogs')) || [];
     worklogs.push(newLog);
     worklogs.sort((a, b) => new Date(a.workDate) - new Date(b.workDate));
     localStorage.setItem('worklogs', JSON.stringify(worklogs));
@@ -89,17 +141,13 @@ function viewWorkHistory() {
         totalSalary += log.dailyWage;
         totalHours += parseFloat(log.workingHours);
 
-        // 수정 삭제 버튼 추가됨
         tbody.innerHTML += `
             <tr>
-                <td style="font-weight:bold;">${log.workDate}</td>
+                <td>${log.workDate}</td>
                 <td>${log.startTime}</td>
                 <td>${log.endTime}</td>
-                <td style="color:#28a745; font-weight:bold;">${log.workingHours} 시간</td>
-                <td>
-                    ${log.dailyWage.toLocaleString()}원 
-                    <span style="font-size:12px; color:#888;">(${log.wageApplied.toLocaleString()}원 × ${log.workingHours}h)</span>
-                </td>
+                <td>${log.workingHours}h</td>
+                <td>${log.dailyWage.toLocaleString()}원</td>
                 <td>
                     <button class="btn-small" onclick="editWorkLog(${log.id})">수정</button>
                     <button class="btn-small btn-danger" onclick="deleteWorkLog(${log.id})">삭제</button>
@@ -109,42 +157,28 @@ function viewWorkHistory() {
     });
 
     document.getElementById('salary-summary').innerHTML = `
-        해당 월 총 근무: ${totalHours.toFixed(1)}시간 <br>
-        누적 월급: <span>${totalSalary.toLocaleString()}</span> 원
+        해당 월 총 근무: ${totalHours.toFixed(1)}시간 | 누적 월급: <strong>${totalSalary.toLocaleString()}원</strong>
     `;
 }
 
-// [추가됨] 근무 기록 삭제 로직
 function deleteWorkLog(logId) {
-    if(!confirm("해당 근무 기록을 삭제하시겠습니까?")) return;
-    
+    if(!confirm("삭제하시겠습니까?")) return;
     let logs = JSON.parse(localStorage.getItem('worklogs')) || [];
     logs = logs.filter(log => log.id !== logId);
     localStorage.setItem('worklogs', JSON.stringify(logs));
-    
-    alert("삭제되었습니다.");
     viewWorkHistory();
 }
 
-// [추가됨] 근무 기록 수정 로직 (기존 데이터를 입력창으로 올리고 기존 데이터는 삭제)
 function editWorkLog(logId) {
     let logs = JSON.parse(localStorage.getItem('worklogs')) || [];
     const targetLog = logs.find(log => log.id === logId);
-    
     if(targetLog) {
-        // 상단 폼에 데이터 채워넣기
         document.getElementById('work-date').value = targetLog.workDate;
         document.getElementById('start-time').value = targetLog.startTime;
         document.getElementById('end-time').value = targetLog.endTime;
-        
-        // 기존 데이터는 삭제 처리 (사용자가 수정 후 재등록하게 유도)
         logs = logs.filter(log => log.id !== logId);
         localStorage.setItem('worklogs', JSON.stringify(logs));
-        
-        alert("수정할 근무 기록을 상단 입력창으로 불러왔습니다.\n내용을 수정한 뒤 [근무 등록] 버튼을 다시 눌러주세요.");
-        viewWorkHistory(); // 화면 갱신하여 기존 리스트에선 숨김
-        
-        // 스크롤을 맨 위로 올려서 폼을 보게 함
+        viewWorkHistory();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
