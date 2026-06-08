@@ -1,61 +1,48 @@
-/* 기본 초기화 */
+/* --- 기본 초기화 --- */
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Malgun Gothic', sans-serif; }
 body { background-color: #f4f7f6; color: #333; display: flex; flex-direction: column; height: 100vh; }
 
-/* 상단 헤더 */
-header { background-color: #343a40; color: white; padding: 15px 20px; font-size: 20px; font-weight: bold; }
+/* --- 헤더 및 레이아웃 --- */
+header { 
+    background-color: #343a40; color: white; padding: 15px 20px; 
+    font-size: 20px; font-weight: bold; 
+    display: flex; align-items: center; gap: 15px;
+}
 
-/* 하단 컨테이너 (사이드바 + 메인) */
+#menu-toggle { cursor: pointer; font-size: 24px; display: none; }
+
 .container { display: flex; flex: 1; overflow: hidden; }
 
-/* 좌측 네비게이션 (사이드바) */
-nav { width: 220px; background-color: #fff; border-right: 1px solid #ddd; display: flex; flex-direction: column; }
+/* --- 네비게이션 --- */
+nav { width: 220px; background-color: #fff; border-right: 1px solid #ddd; display: flex; flex-direction: column; transition: 0.3s; }
 nav a { text-decoration: none; color: #333; padding: 15px 20px; display: block; border-bottom: 1px solid #eee; font-weight: bold; }
 nav a:hover, nav a.active { background-color: #e2e6ea; color: #007bff; }
-.logout-btn { margin-top: auto; padding: 15px 20px; color: red; font-weight: bold; cursor: pointer; border-top: 1px solid #ddd; text-align: center; background: #fff; border: none; width: 100%;}
+.logout-btn { margin-top: auto; padding: 15px 20px; color: red; font-weight: bold; cursor: pointer; border-top: 1px solid #ddd; background: #fff; border: none; width: 100%; }
 
-/* 우측 메인 콘텐츠 영역 */
+/* --- 메인 콘텐츠 --- */
 main { flex: 1; padding: 30px; overflow-y: auto; }
 .admin-section { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 30px; }
 h2 { border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 20px; font-size: 18px; }
 
-/* 폼 및 테이블 요소 */
+/* --- 테이블 및 폼 --- */
 .form-group { margin-bottom: 15px; }
 .form-group label { display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold; color: #555; }
 input[type="text"], input[type="number"], select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
 button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
 button:hover { background-color: #0056b3; }
-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+
+table { display: block; width: 100%; overflow-x: auto; white-space: nowrap; border-collapse: collapse; margin-top: 10px; }
 th, td { border: 1px solid #ddd; padding: 10px; text-align: left; font-size: 14px; }
 th { background-color: #f8f9fa; }
 .btn-small { padding: 5px 10px; font-size: 12px; }
 .btn-danger { background-color: #dc3545; }
 .btn-danger:hover { background-color: #c82333; }
 
-
-/* PC에서는 햄버거 버튼 숨김 */
-#menu-toggle { display: none; }
-
-table {
-    display: block;
-    width: 100%;
-    overflow-x: auto;
-    white-space: nowrap;
-}
-
-/* --- 모바일 반응형 스타일 추가 --- */
+/* --- 반응형 (모바일) --- */
 @media (max-width: 768px) {
-    /* 1. 사이드바 숨김 처리 */
-    nav { 
-        position: fixed; top: 0; left: -220px; width: 220px; height: 100%; 
-        background: #fff; z-index: 1000; transition: 0.3s; box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-    }
-    nav.open { left: 0; } /* 메뉴 열림 상태 */
-    
-    /* 2. 햄버거 버튼 표시 */
-    #menu-toggle { display: block; padding: 15px; cursor: pointer; }
-    
-    /* 3. 메인 콘텐츠가 화면에 꽉 차게 */
+    #menu-toggle { display: block; } /* 햄버거 버튼 노출 */
+    nav { position: fixed; top: 0; left: -220px; height: 100%; z-index: 1000; box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
+    nav.open { left: 0; }
     .container { flex-direction: column; }
     main { padding: 15px; }
 }
