@@ -31,11 +31,13 @@
                     <input type="text" id="new-role" placeholder="새로운 직책 입력 (예: 매니저)">
                     <button onclick="addRole()">직책 추가</button>
                 </div>
-                <table>
-                    <thead><tr><th>등록된 직책</th><th>관리</th></tr></thead>
-                    <tbody id="role-list">
-                        </tbody>
-                </table>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>등록된 직책</th><th>관리</th></tr></thead>
+                        <tbody id="role-list">
+                            </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="admin-section">
@@ -63,13 +65,15 @@
 
             <div class="admin-section">
                 <h2>직원 관리</h2>
-                <table>
-                    <thead>
-                        <tr><th>이름</th><th>전화번호 (ID)</th><th>직책</th><th>시급</th><th>관리</th></tr>
-                    </thead>
-                    <tbody id="employee-list">
-                        </tbody>
-                </table>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr><th>이름</th><th>전화번호 (ID)</th><th>직책</th><th>시급</th><th>관리</th></tr>
+                        </thead>
+                        <tbody id="employee-list">
+                            </tbody>
+                    </table>
+                </div>
             </div>
         </main>
     </div>
