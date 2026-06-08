@@ -32,6 +32,17 @@ th { background-color: #f8f9fa; }
 .btn-danger { background-color: #dc3545; }
 .btn-danger:hover { background-color: #c82333; }
 
+
+/* PC에서는 햄버거 버튼 숨김 */
+#menu-toggle { display: none; }
+
+table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
 /* --- 모바일 반응형 스타일 추가 --- */
 @media (max-width: 768px) {
     /* 1. 사이드바 숨김 처리 */
@@ -47,14 +58,4 @@ th { background-color: #f8f9fa; }
     /* 3. 메인 콘텐츠가 화면에 꽉 차게 */
     .container { flex-direction: column; }
     main { padding: 15px; }
-}
-
-/* PC에서는 햄버거 버튼 숨김 */
-#menu-toggle { display: none; }
-
-table {
-    display: block;
-    width: 100%;
-    overflow-x: auto;
-    white-space: nowrap;
 }
