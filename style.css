@@ -38,6 +38,7 @@ table {
     table-layout: fixed; /* 중요: 셀 너비를 강제로 고정하여 밖으로 삐져나가지 않게 함 */
     border-collapse: collapse; 
     margin-top: 10px; 
+    min-width: 700px
 }
 
 th, td { 
@@ -51,11 +52,19 @@ th, td {
 /* 테이블 안의 입력창들 너비 조절 */
 td input[type="text"], 
 td input[type="number"], 
-td select { 
-    width: 100%; 
-    padding: 5px; 
-    font-size: 13px;
-    box-sizing: border-box; /* 패딩이 너비에 포함되게 함 */
+td select {
+    width: 100%;           /* 셀 너비의 100%를 차지 */
+    height: 35px;          /* 높이를 고정하여 균일하게 */
+    padding: 0 5px;        /* 내부 여백은 좌우로만 최소화 */
+    border: 1px solid #ccc;
+    border-radius: 2px;    /* 둥근 모서리를 줄여서 더 박스답게 */
+    box-sizing: border-box; /* 패딩이 있어도 너비를 넘지 않게 함 */
+    vertical-align: middle;
+}
+
+/* 셀 내부 패딩을 최소화하여 입력칸이 더 크게 보이도록 */
+td {
+    padding: 2px;          /* 셀 자체의 여백을 줄여서 입력칸을 키움 */
 }
 
 /* 관리 버튼 칸 너비 고정 */
