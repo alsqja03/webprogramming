@@ -32,20 +32,26 @@ button { padding: 10px 15px; background-color: #007bff; color: white; border: no
 button:hover { background-color: #0056b3; }
 
 /* --- 표 스타일 수정 --- */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;         /* 화면보다 표가 넓으면 가로 스크롤 생성 */
+    -webkit-overflow-scrolling: touch;
+    margin: 10px 0;
+}
+
+/* 2. 테이블 스타일 수정 */
 table { 
-    display: table; 
     width: 100%; 
-    table-layout: fixed; /* 중요: 셀 너비를 강제로 고정하여 밖으로 삐져나가지 않게 함 */
+    min-width: 500px;         /* 중요: 표가 너무 좁아지지 않게 최소 너비 설정 */
+    table-layout: fixed;      /* 각 열의 너비를 고정 */
     border-collapse: collapse; 
-    margin-top: 10px; 
 }
 
 th, td { 
     border: 1px solid #ddd; 
-    padding: 5px; /* 패딩을 조금 줄여서 공간 확보 */
+    padding: 4px;             /* 여백을 살짝 줄임 */
     text-align: center; 
-    font-size: 13px; /* 글자 크기를 살짝 줄여서 한 줄에 들어가게 함 */
-    word-wrap: break-word; /* 글자가 길면 줄바꿈 처리 */
+    font-size: 13px; 
 }
 
 /* 테이블 안의 입력창들 너비 조절 */
@@ -53,7 +59,7 @@ td input[type="text"],
 td input[type="number"], 
 td select {
     width: 100%;           /* 셀 너비의 100%를 차지 */
-    height: 35px;          /* 높이를 고정하여 균일하게 */
+    height: 30px;          /* 높이를 고정하여 균일하게 */
     padding: 0 5px;        /* 내부 여백은 좌우로만 최소화 */
     border: 1px solid #ccc;
     border-radius: 2px;    /* 둥근 모서리를 줄여서 더 박스답게 */
@@ -67,7 +73,7 @@ td {
 }
 
 /* 관리 버튼 칸 너비 고정 */
-td:last-child { width: 60px; } 
+td:last-child { width: 80px; } 
 
 th { background-color: #f8f9fa; }
 
