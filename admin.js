@@ -88,7 +88,7 @@ function renderEmployeeManagement() {
                 <td><input type="text" id="phone-${emp.id}" value="${emp.id}" style="width:110px;"></td>
                 <td><select id="role-${emp.id}">${roleOptions}</select></td>
                 <td><input type="number" id="wage-${emp.id}" value="${emp.hourlyWage || 0}" style="width:80px;"></td>
-                <td style="display:flex; gap:5px;">
+                <td>
                     <button class="btn-small" onclick="updateEmployee('${emp.id}')">저장</button>
                     ${deleteBtn}
                 </td>
