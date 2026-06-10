@@ -1,6 +1,6 @@
 function initAdminData() {
     const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
-    if (!loggedInUser || (loggedInUser.role !== '사장' && loggedInUser.role !== '부관리자')) {
+    if (!loggedInUser || (loggedInUser.role !== '사장' && loggedInUser.role !== '부관리자' && loggedInUser.role !== '관리자')) {
         alert('관리자 권한이 필요합니다.');
         window.location.href = 'index.html';
         return;
@@ -27,15 +27,16 @@ function renderRoles() {
 }
 
 function addRole() {
-    const newRole = document.getElementById('new-role').value.trim();
+    let input = document.getElementById('new-role');
+    const newRole = input.value.trim();
     if (!newRole) return alert("직책명을 입력하세요.");
     const roles = JSON.parse(localStorage.getItem('roles')) || [];
     if (roles.includes(newRole)) return alert("이미 존재하는 직책입니다.");
     roles.push(newRole);
     localStorage.setItem('roles', JSON.stringify(roles));
-    document.getElementById('new-role').value = '';
+    input.value = '';
     renderRoles();
-    renderEmployeeManagement(); // 직책이 추가되면 직원 관리의 select 옵션도 갱신되어야 함
+    renderEmployeeManagement(); 
 }
 
 function deleteRole(index) {
@@ -54,7 +55,6 @@ function createEmployee() {
     const role = document.getElementById('emp-role').value;
 
     if (!name || !phone || !birth || !role) return alert("모든 항목을 입력하고 직책을 선택해주세요.");
-
     const employees = JSON.parse(localStorage.getItem('employees')) || [];
     if (employees.find(emp => emp.id === phone)) return alert("이미 등록된 전화번호입니다.");
 
@@ -71,7 +71,7 @@ function createEmployee() {
     renderEmployeeManagement(); 
 }
 
-// [수정됨] 직원 관리 렌더링
+
 function renderEmployeeManagement() {
     const employees = JSON.parse(localStorage.getItem('employees')) || [];
     const roles = JSON.parse(localStorage.getItem('roles')) || [];
@@ -97,7 +97,7 @@ function renderEmployeeManagement() {
     });
 }
 
-// [추가됨] 직원 정보 종합 수정 기능
+
 function updateEmployee(originalId) {
     const newName = document.getElementById(`name-${originalId}`).value.trim();
     const newPhone = document.getElementById(`phone-${originalId}`).value.trim();
@@ -125,22 +125,17 @@ function updateEmployee(originalId) {
     }
 }
 
-// [추가됨] 직원 삭제 기능
-// [수정됨] 직원 및 연관 데이터 연쇄 삭제 기능
 function deleteEmployee(phoneId) {
     if(!confirm("해당 직원 계정을 완전히 삭제하시겠습니까?\n(관련 스케줄 및 근무 기록도 모두 함께 삭제됩니다.)")) return;
     
-    // 1. 직원 데이터 삭제
     let employees = JSON.parse(localStorage.getItem('employees')) || [];
     employees = employees.filter(emp => emp.id !== phoneId);
     localStorage.setItem('employees', JSON.stringify(employees));
 
-    // 2. 스케줄 연쇄 삭제
     let schedules = JSON.parse(localStorage.getItem('schedules')) || [];
     schedules = schedules.filter(s => s.empId !== phoneId);
     localStorage.setItem('schedules', JSON.stringify(schedules));
 
-    // 3. 근무 기록 연쇄 삭제
     let worklogs = JSON.parse(localStorage.getItem('worklogs')) || [];
     worklogs = worklogs.filter(log => log.empId !== phoneId);
     localStorage.setItem('worklogs', JSON.stringify(worklogs));
