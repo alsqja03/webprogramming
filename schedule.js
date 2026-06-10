@@ -57,28 +57,39 @@ function renderSubmitForm() {
 function submitMySchedule() {
     const targetWeek = document.getElementById('submit-week').value;
     let schedules = JSON.parse(localStorage.getItem('schedules')) || [];
-    schedules = schedules.filter(s => !(s.empId === currentUser.id && s.week === targetWeek));
 
-    const newEntries = daysOfWeek
-        .map(day => ({
-            day,
-            isAvailable: document.getElementById(`chk-${day}`).checked,
-            remarks: document.getElementById(`remark-${day}`).value.trim(),
-        }))
-        .filter(({ isAvailable, remarks }) => isAvailable || remarks !== '')
-        .map(({ day, isAvailable, remarks }) => ({
+    schedules = schedules.filter(function(schedule) {
+        return !(schedule.empId === currentUser.id &&
+                 schedule.week === targetWeek);
+    });
+    const newEntries = [];
+    for (let i = 0; i < daysOfWeek.length; i++) {
+        const day = daysOfWeek[i];
+        const isAvailable = document.getElementById('chk-' + day).checked;
+        const remarks = document.getElementById('remark-' + day).value.trim();
+        if (!isAvailable && remarks === '') {
+            continue;
+        }
+        newEntries.push({
             week: targetWeek,
-            day,
+            day: day,
             empId: currentUser.id,
             empName: currentUser.name,
-            isAvailable,
-            remarks,
+            isAvailable: isAvailable,
+            remarks: remarks,
             isConfirmed: false,
-            assignedRole: '',
-        }));
-
-    if (newEntries.length === 0) return alert('제출할 내용이 없습니다.');
-    localStorage.setItem('schedules', JSON.stringify([...schedules, ...newEntries]));
+            assignedRole: ''
+        });
+    }
+    if (newEntries.length === 0) {
+        alert('제출할 내용이 없습니다.');
+        return;
+    }
+    schedules = schedules.concat(newEntries);
+    localStorage.setItem(
+        'schedules',
+        JSON.stringify(schedules)
+    );
     alert('성공적으로 제출되었습니다.');
 }
 
@@ -136,11 +147,11 @@ function saveConfirmedSchedule() {
     let schedules = JSON.parse(localStorage.getItem('schedules')) || [];
 
     rows.forEach(row => {
-        const empId = row.getAttribute('data-emp');
+        let empId = row.getAttribute('data-emp');
         const day = row.getAttribute('data-day');
-        const isConfirmed = row.querySelector('.chk-confirm').checked;
-        const selectedRole = row.querySelector('.sel-role').value;
-        const modRemark = row.querySelector('.mod-remark').value;
+        let isConfirmed = row.querySelector('.chk-confirm').checked;
+        let selectedRole = row.querySelector('.sel-role').value;
+        let modRemark = row.querySelector('.mod-remark').value;
 
         const idx = schedules.findIndex(s => s.week === targetWeek && s.day === day && s.empId === empId);
         if (idx > -1) {
