@@ -15,16 +15,16 @@ window.onload = function() {
     }
 
     renderSubmitForm();
-    setDefaultWeeks(); // [수정] 주차 자동 설정 로직 호출
+    setDefaultWeeks(); 
 };
 
-// [수정] 오늘/다음 주차 자동 계산
+
 function setDefaultWeeks() {
-    const today = new Date();
-    const currentWeek = getISOWeekString(today);
-    const nextDate = new Date(today);
+    let today = new Date();
+    let currentWeek = getISOWeekString(today);
+    let nextDate = new Date(today);
     nextDate.setDate(today.getDate() + 7);
-    const nextWeek = getISOWeekString(nextDate);
+    let nextWeek = getISOWeekString(nextDate);
     
     document.getElementById('view-week').value = currentWeek;
     document.getElementById('submit-week').value = nextWeek;
