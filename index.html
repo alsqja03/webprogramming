@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-
     <div class="login-box">
         <h2>시스템 로그인</h2>
         <p style="color:#666; font-size:13px; margin-bottom:20px;">전화번호와 비밀번호를 입력하세요.</p>
@@ -16,7 +15,6 @@
         <input type="password" id="userpw" placeholder="비밀번호">
         <button onclick="handleLogin()">로그인</button>
     </div>
-
     <script>
         function initDemoData() {
             if (!localStorage.getItem('employees')) {
@@ -33,11 +31,9 @@
             }
         }
 
-
         function handleLogin() {
             const inputId = document.getElementById('userid').value.trim();
             const inputPw = document.getElementById('userpw').value.trim();
-            
             const employees = JSON.parse(localStorage.getItem('employees')) || [];
             const user = employees.find(emp => emp.id === inputId && emp.pw === inputPw);
 
