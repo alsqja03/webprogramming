@@ -13,12 +13,10 @@
     </style>
 </head>
 <body>
-
     <header>
         <span id="menu-toggle" onclick="toggleNav()">☰</span>
         <span>주간 스케줄 관리 시스템</span>
     </header>
-    
     <div class="container">
         <nav>
             <a href="work.html">근무</a>
@@ -28,7 +26,6 @@
             <a href="account.html">계정 설정</a>
             <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         </nav>
-
         <main>
             <div class="admin-section">
                 <h2>주 별 시간표 보기</h2>
@@ -48,7 +45,6 @@
                     </table>
                 </div>
             </div>
-
             <div class="admin-section" id="submit-section">
                 <h2>다음주 시간표 제출</h2>
                 <p style="margin-bottom: 15px; font-size: 14px; color: #666;">출근 가능한 요일을 체크하고, 특이사항이 있다면 작성해주세요.</p>
@@ -67,7 +63,6 @@
                 </div>
                 <button style="margin-top: 15px;" onclick="submitMySchedule()">시간표 제출</button>
             </div>
-
             <div class="admin-section hidden" id="confirm-section">
                 <h2>시간표 확정 및 수정 (관리자 전용)</h2>
                 <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center;">
@@ -88,7 +83,6 @@
             </div>
         </main>
     </div>
-
     <script src="schedule.js"></script>
 </body>
 </html>
