@@ -1,5 +1,4 @@
 let currentUser = null;
-
 window.onload = function() {
     currentUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
     if (!currentUser) {
@@ -13,20 +12,16 @@ window.onload = function() {
     if (!localStorage.getItem('worklogs')) {
         localStorage.setItem('worklogs', JSON.stringify([]));
     }
-
     const today = new Date();
     const kstOffset = 9 * 60 * 60 * 1000;
     const localToday = new Date(today.getTime() + kstOffset).toISOString();
-    
     document.getElementById('work-date').value = localToday.split('T')[0];
     document.getElementById('view-month').value = localToday.slice(0, 7); 
-    
-    // 추가된 함수 호출
     renderMyWeeklySchedule(); 
     viewWorkHistory(); 
 };
 
-// [추가] ISO Week 계산 (오늘 날짜가 몇 번째 주인지 계산)
+
 function getISOWeekString(dateObj) {
     const target = new Date(dateObj.valueOf());
     const dayNr = (target.getDay() + 6) % 7;
@@ -40,12 +35,10 @@ function getISOWeekString(dateObj) {
     return `${target.getFullYear()}-W${weekNum.toString().padStart(2, '0')}`;
 }
 
-// [추가] 나의 이번 주 스케줄 렌더링
+
 function renderMyWeeklySchedule() {
     const currentWeekStr = getISOWeekString(new Date());
     const schedules = JSON.parse(localStorage.getItem('schedules')) || [];
-    
-    // 현재 주차, 내 ID, 확정(isConfirmed: true)된 데이터 필터링
     const myThisWeek = schedules.filter(s => 
         s.week === currentWeekStr && 
         s.empId === currentUser.id && 
@@ -53,16 +46,13 @@ function renderMyWeeklySchedule() {
     );
     
     const container = document.getElementById('my-weekly-schedule-container');
-    if (!container) return; // HTML에 해당 ID가 없으면 중단
-
+    if (!container) return;
     if (myThisWeek.length === 0) {
         container.innerHTML = `<p style="padding:10px; color:#888;">이번 주 확정된 출근 스케줄이 없습니다.</p>`;
         return;
     }
-
     const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
     myThisWeek.sort((a, b) => daysOfWeek.indexOf(a.day) - daysOfWeek.indexOf(b.day));
-
     let html = `<div style="display: flex; gap: 10px; flex-wrap: wrap;">`;
     myThisWeek.forEach(s => {
         html += `
@@ -80,25 +70,18 @@ function recordWorkTime() {
     const workDate = document.getElementById('work-date').value;
     const startTime = document.getElementById('start-time').value;
     const endTime = document.getElementById('end-time').value;
-
     if (!workDate || !startTime || !endTime) return alert("날짜와 출퇴근 시간을 모두 입력해주세요.");
-
     const start = new Date(`1970-01-01T${startTime}:00`);
     let end = new Date(`1970-01-01T${endTime}:00`);
     if (end < start) end.setDate(end.getDate() + 1);
-
     const diffHours = (end - start) / (1000 * 60 * 60);
-
     const employees = JSON.parse(localStorage.getItem('employees')) || [];
     const freshUserInfo = employees.find(emp => emp.id === currentUser.id);
     const wage = freshUserInfo ? (freshUserInfo.hourlyWage || 0) : 0;
-
     if (wage === 0) {
         return alert("시급이 설정되어 있지 않아 근무를 등록할 수 없습니다. 관리자에게 먼저 문의해주세요.");
     }
-
     const dailyWage = Math.floor(diffHours * wage);
-
     const newLog = {
         id: Date.now(),
         empId: currentUser.id,
@@ -109,12 +92,10 @@ function recordWorkTime() {
         wageApplied: wage,
         dailyWage: dailyWage
     };
-
     let worklogs = JSON.parse(localStorage.getItem('worklogs')) || [];
     worklogs.push(newLog);
     worklogs.sort((a, b) => new Date(a.workDate) - new Date(b.workDate));
     localStorage.setItem('worklogs', JSON.stringify(worklogs));
-
     alert(`${workDate} 일자 근무가 등록되었습니다.`);
     document.getElementById('view-month').value = workDate.slice(0, 7);
     viewWorkHistory();
@@ -123,15 +104,12 @@ function recordWorkTime() {
 function viewWorkHistory() {
     const targetMonth = document.getElementById('view-month').value; 
     if (!targetMonth) return;
-
     const worklogs = JSON.parse(localStorage.getItem('worklogs')) || [];
     const myLogs = worklogs.filter(log => log.empId === currentUser.id && log.workDate.startsWith(targetMonth));
     const tbody = document.getElementById('work-history-list');
     tbody.innerHTML = '';
-    
     let totalSalary = 0;
     let totalHours = 0;
-
     if (myLogs.length === 0) {
         document.getElementById('salary-summary').innerHTML = `${targetMonth}월의 근무 기록이 없습니다.`;
         return tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">해당 월의 근무 기록이 없습니다.</td></tr>`;
@@ -140,7 +118,6 @@ function viewWorkHistory() {
     myLogs.forEach(log => {
         totalSalary += log.dailyWage;
         totalHours += parseFloat(log.workingHours);
-
         tbody.innerHTML += `
             <tr>
                 <td>${log.workDate}</td>
@@ -155,7 +132,6 @@ function viewWorkHistory() {
             </tr>
         `;
     });
-
     document.getElementById('salary-summary').innerHTML = `
         해당 월 총 근무: ${totalHours.toFixed(1)}시간 | 누적 월급: <strong>${totalSalary.toLocaleString()}원</strong>
     `;
