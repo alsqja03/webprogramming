@@ -1,6 +1,5 @@
 let currentUser = null;
 const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
-
 window.onload = function () {
     currentUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
     if (!currentUser) {
@@ -8,16 +7,13 @@ window.onload = function () {
         window.location.href = 'index.html';
         return;
     }
-
     if (currentUser.role === '사장' || currentUser.role === '부관리자') {
         document.getElementById('nav-admin').classList.remove('hidden');
         document.getElementById('confirm-section').classList.remove('hidden');
     }
-
     renderSubmitForm();
     setDefaultWeeks();
 };
-
 
 function toWeekInputValue(date) {
     const d = new Date(date);
@@ -33,7 +29,6 @@ function setDefaultWeeks() {
     const today = new Date();
     const nextWeekDate = new Date(today);
     nextWeekDate.setDate(today.getDate() + 7);
-
     document.getElementById('view-week').value = toWeekInputValue(today);
     document.getElementById('submit-week').value = toWeekInputValue(nextWeekDate);
     document.getElementById('confirm-week').value = toWeekInputValue(nextWeekDate);
@@ -57,7 +52,6 @@ function renderSubmitForm() {
 function submitMySchedule() {
     const targetWeek = document.getElementById('submit-week').value;
     let schedules = JSON.parse(localStorage.getItem('schedules')) || [];
-
     schedules = schedules.filter(function(schedule) {
         return !(schedule.empId === currentUser.id &&
                  schedule.week === targetWeek);
@@ -98,11 +92,9 @@ function loadCandidates() {
     const roles = JSON.parse(localStorage.getItem('roles')) || [];
     const employees = JSON.parse(localStorage.getItem('employees')) || [];
     const schedules = JSON.parse(localStorage.getItem('schedules')) || [];
-
     const candidates = schedules
         .filter(s => s.week === targetWeek)
         .sort((a, b) => daysOfWeek.indexOf(a.day) - daysOfWeek.indexOf(b.day));
-
     const tbody = document.getElementById('candidate-list');
     if (candidates.length === 0) {
         tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">해당 주차에 제출된 스케줄이 없습니다.</td></tr>`;
@@ -113,21 +105,17 @@ function loadCandidates() {
     const dayCounts = {};
     candidates.forEach(c => { dayCounts[c.day] = (dayCounts[c.day] || 0) + 1; });
     const renderedDays = {};
-
     tbody.innerHTML = candidates.map(cand => {
         const empData = employees.find(e => e.id === cand.empId);
         const defaultRole = empData?.role ?? '';
         const selectedRole = cand.assignedRole || defaultRole;
-
         const dayCell = !renderedDays[cand.day]
             ? `<td rowspan="${dayCounts[cand.day]}" style="font-weight:bold; background-color:#f8f9fa; text-align:center; vertical-align:middle;">${cand.day}</td>`
             : '';
         renderedDays[cand.day] = true;
-
         const roleOptions = roles
             .map(r => `<option value="${r}" ${selectedRole === r ? 'selected' : ''}>${r}</option>`)
             .join('');
-
         return `
             <tr data-emp="${cand.empId}" data-day="${cand.day}">
                 ${dayCell}
@@ -145,14 +133,12 @@ function saveConfirmedSchedule() {
     const targetWeek = document.getElementById('confirm-week').value;
     const rows = document.querySelectorAll('#candidate-list tr[data-emp]');
     let schedules = JSON.parse(localStorage.getItem('schedules')) || [];
-
     rows.forEach(row => {
         let empId = row.getAttribute('data-emp');
         const day = row.getAttribute('data-day');
         let isConfirmed = row.querySelector('.chk-confirm').checked;
         let selectedRole = row.querySelector('.sel-role').value;
         let modRemark = row.querySelector('.mod-remark').value;
-
         const idx = schedules.findIndex(s => s.week === targetWeek && s.day === day && s.empId === empId);
         if (idx > -1) {
             schedules[idx].isConfirmed = isConfirmed;
@@ -161,7 +147,6 @@ function saveConfirmedSchedule() {
             schedules[idx].isAvailable = true;
         }
     });
-
     localStorage.setItem('schedules', JSON.stringify(schedules));
     alert('저장되었습니다.');
     loadCandidates();
@@ -172,7 +157,6 @@ function viewConfirmedSchedule() {
     const schedules = JSON.parse(localStorage.getItem('schedules')) || [];
     const confirmed = schedules.filter(s => s.week === targetWeek && s.isConfirmed);
     const tbody = document.getElementById('confirmed-schedule-list');
-
     if (confirmed.length === 0) {
         tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">해당 주차에 확정된 시간표가 없습니다.</td></tr>`;
         return;
@@ -185,13 +169,10 @@ function viewConfirmedSchedule() {
                 if (a.assignedRole !== b.assignedRole) return a.assignedRole.localeCompare(b.assignedRole);
                 return a.empName.localeCompare(b.empName);
             });
-
         if (daySchedules.length === 0) return [];
-
         const roleCounts = {};
         daySchedules.forEach(s => { roleCounts[s.assignedRole] = (roleCounts[s.assignedRole] || 0) + 1; });
         const renderedRoles = {};
-
         return daySchedules.map((s, index) => {
             const dayCell = index === 0
                 ? `<td rowspan="${daySchedules.length}" style="font-weight:bold; text-align:center; background:#f8f9fa; vertical-align:middle;">${day}</td>`
@@ -200,7 +181,6 @@ function viewConfirmedSchedule() {
                 ? `<td rowspan="${roleCounts[s.assignedRole]}" style="text-align:center; vertical-align:middle;"><span style="background:#e9ecef; padding:3px 8px; border-radius:4px; font-size:12px;">${s.assignedRole}</span></td>`
                 : '';
             renderedRoles[s.assignedRole] = true;
-
             return `
                 <tr>
                     ${dayCell}
