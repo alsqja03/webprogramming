@@ -14,12 +14,10 @@
     </style>
 </head>
 <body>
-
     <header>
         <span id="menu-toggle" onclick="toggleNav()">☰</span>
         <span>주간 스케줄 관리 시스템</span>
     </header>
-    
     <div class="container">
         <nav>
             <a href="work.html" class="active">근무</a>
@@ -29,14 +27,12 @@
             <a href="account.html">계정 설정</a>
             <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         </nav>
-
         <main>
             <div class="admin-section">
                 <h2>나의 이번 주 시간표</h2>
                 <div id="my-weekly-schedule-container" style="background: #f8f9fa; padding: 20px; border-radius: 8px; text-align: center; color: #555;">
                     </div>
             </div>
-
             <div class="admin-section">
                 <h2>근무 시간 등록</h2>
                 <p style="margin-bottom: 15px; font-size: 14px; color: #666;">오늘의 출근 시간과 퇴근 시간을 정확히 입력해주세요.</p>
@@ -57,18 +53,15 @@
                     <button onclick="recordWorkTime()" style="height: 40px;">근무 등록</button>
                 </div>
             </div>
-
             <div class="admin-section">
                 <h2>급여 및 근무 기록 조회</h2>
                 <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center;">
                     <input type="month" id="view-month">
                     <button onclick="viewWorkHistory()">조회하기</button>
                 </div>
-                
                 <div class="summary-box" id="salary-summary">
                     조회할 월을 선택해주세요.
                 </div>
-
                 <table>
                     <thead>
                         <tr><th>근무 일자</th><th>출근 시간</th><th>퇴근 시간</th><th>인정 근로시간</th><th>일급 산출내역</th><th>관리</th></tr>
@@ -80,7 +73,6 @@
             </div>
         </main>
     </div>
-
     <script src="work.js"></script>
 </body>
 </html>
