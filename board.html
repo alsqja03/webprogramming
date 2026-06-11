@@ -9,27 +9,21 @@
     <style>
         .hidden { display: none !important; }
         .admin-section { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 30px; }
-        
-        /* 게시판 전용 스타일 */
         .board-table th, .board-table td { text-align: center; }
         .board-table td.title-cell { text-align: center; cursor: pointer; color: #007bff; text-decoration: underline; }
         .board-table td.title-cell:hover { font-weight: bold; }
-        
         .notice-detail-header { border-bottom: 2px solid #ddd; padding-bottom: 15px; margin-bottom: 20px; }
         .notice-detail-title { font-size: 22px; font-weight: bold; margin-bottom: 10px; color: #333; }
         .notice-detail-info { font-size: 13px; color: #777; display: flex; justify-content: space-between; }
         .notice-detail-content { min-height: 200px; line-height: 1.6; color: #444; white-space: pre-wrap; margin-bottom: 20px; }
-        
         textarea { width: 100%; height: 200px; padding: 15px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; resize: none; margin-bottom: 10px; }
     </style>
 </head>
 <body>
-
     <header>
         <span id="menu-toggle" onclick="toggleNav()">☰</span>
         <span>주간 스케줄 관리 시스템</span>
     </header>
-    
     <div class="container">
         <nav>
             <a href="work.html">근무</a>
@@ -39,14 +33,12 @@
             <a href="account.html">계정 설정</a>
             <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
         </nav>
-
         <main>
             <div class="admin-section" id="section-list">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h2 style="margin: 0; border: none;">공지사항</h2>
                     <button id="btn-write-form" class="hidden" onclick="toggleWriteForm(true)">새 공지 작성</button>
                 </div>
-
                 <div class="table-wrapper">
                     <table class="board-table">
                         <thead>
@@ -62,7 +54,6 @@
                     </table>
                 </div>
             </div>
-
             <div class="admin-section hidden" id="section-write">
                 <h2>공지사항 작성</h2>
                 <div class="form-group">
@@ -78,7 +69,6 @@
                     <button onclick="submitNotice()">등록하기</button>
                 </div>
             </div>
-
             <div class="admin-section hidden" id="section-detail">
                 <div class="notice-detail-header">
                     <div class="notice-detail-title" id="detail-title">제목이 들어갑니다</div>
