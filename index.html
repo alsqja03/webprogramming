@@ -22,8 +22,6 @@
             if (!localStorage.getItem('employees')) {
                 const defaultEmployees = [{ 
                     id: '1234', pw: '1234', name: '어드민', role: '사장', isFirstLogin: false, hourlyWage: 0 
-                },{
-                    id: '1111', pw: '0000', name: '직원1', role: '직원', isFirstLogin: true, houelyWage: 0
                 }];
                 localStorage.setItem('employees', JSON.stringify(defaultEmployees));
             }
